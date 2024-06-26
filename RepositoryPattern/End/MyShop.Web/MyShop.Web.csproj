@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <UserSecretsId>437e0faf-f841-4b9e-bea3-562e13b5eeac</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyShop.Domain\MyShop.Domain.csproj" />
+    <ProjectReference Include="..\MyShop.Infrastructure\MyShop.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
