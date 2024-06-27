@@ -16,8 +16,8 @@ namespace MyShop.Web
             //CreateWebHostBuilder(args).Build().Run();
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllersWithViews(); 
-            builder.Services.AddTransient<ShoppingContext>();
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddRepositories();
             CreateInitialDatabase();
             var app = builder.Build();
 
@@ -65,8 +65,5 @@ namespace MyShop.Web
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
     }
 }

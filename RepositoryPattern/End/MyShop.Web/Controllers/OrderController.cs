@@ -11,26 +11,25 @@ namespace MyShop.Web.Controllers
 {
     public class OrderController : Controller
     {
-        private ShoppingContext context;
+        private readonly IRepository<Order> _orderRepository;
+        private readonly IRepository<Product> _productsRepository;
 
-        public OrderController()
+        public OrderController(IRepository<Order> orderRepository, IRepository<Product> productRepository)
         {
-            context = new ShoppingContext();
+            _orderRepository = orderRepository;
+            _productsRepository = productRepository;
         }
 
         public IActionResult Index()
         {
-            var orders = context.Orders
-                .Include(order => order.LineItems)
-                .ThenInclude(lineItem => lineItem.Product)
-                .Where(order => order.OrderDate > DateTime.UtcNow.AddDays(-1)).ToList();
+            var orders = _orderRepository.GetAll();
 
             return View(orders);
         }
 
         public IActionResult Create()
         {
-            var products = context.Products.ToList();
+            var products = _productsRepository.GetAll();
 
             return View(products);
         }
@@ -60,9 +59,9 @@ namespace MyShop.Web.Controllers
                 Customer = customer
             };
 
-            context.Orders.Add(order);
+            _orderRepository.Add(order);
 
-            context.SaveChanges();
+            _orderRepository.SaveChanges();
 
             return Ok("Order Created");
         }

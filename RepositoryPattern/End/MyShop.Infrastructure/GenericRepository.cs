@@ -18,7 +18,7 @@ namespace MyShop.Infrastructure
 
         public T Add(T entity) => Context.Add(entity).Entity;
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
            return Context.Set<T>().AsQueryable().Where(predicate);
         }
