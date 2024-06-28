@@ -13,6 +13,12 @@ namespace MyShop.Infrastructure
         {
         }
 
+        public override IEnumerable<Order> GetAll()
+        {
+            return Context.Orders.Include(o => o.LineItems)
+                .ThenInclude(l => l.Product).ToList();
+        }
+
         public override IEnumerable<Order> Find(Expression<Func<Order, bool>> predicate)
         {
             // eagrly loaded to include all the line items

@@ -28,7 +28,7 @@ namespace MyShop.Infrastructure
            return Context.Find<T>(id);
         }
 
-        public IEnumerable<T> GetAll() 
+        public virtual IEnumerable<T> GetAll() 
             => Context.Set<T>().ToList();
 
         public virtual void SaveChanges()
