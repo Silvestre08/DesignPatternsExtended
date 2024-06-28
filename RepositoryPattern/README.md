@@ -31,7 +31,13 @@ In large applications we can run into the issue of large unit or work and loose 
 
 ## Lazy loading
 
-Lazy Initialization
+Lazy loading is a technique that can be used to improve performance of applications. It ensures we loiad data when we only actually need it.
+
+There are different flavors of Lazy loading:
+
+1. Lazy Initialization: the idea behind lazy initialization is the we only proceed to initialize our backing field to an exposed property the first time someone tries access the property. This ideia is implemented in our unit of work class: we only create a repository when we access the property by checking if it is null or not.
+   Our example also adds a profile picture to our customer entity. Pictures are expensive and we should only load when they are needed.
+
 Value holders
 Virtuak Procies
 Ghost Objects
