@@ -4,8 +4,6 @@ namespace MyShop.Domain.Models
 {
     public class Customer
     {
-        private byte[] _profilePicture;
-
         public Guid CustomerId { get; set; }
 
         public string Name { get; set; }
@@ -13,20 +11,14 @@ namespace MyShop.Domain.Models
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
+
+        public Lazy<byte[]> ProfilePictureValueHolder { get; set; }
+
         public byte[] ProfilePicture
         {
             get
             {
-                if (_profilePicture == null)
-                {
-                    _profilePicture = ProfilePictureService.GetFor(Name);
-                }
-                return _profilePicture;
-            }
-
-            set
-            {
-                _profilePicture = value;
+                return ProfilePictureValueHolder.Value;
             }
         }
 

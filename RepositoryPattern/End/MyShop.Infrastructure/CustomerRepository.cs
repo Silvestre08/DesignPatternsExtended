@@ -14,6 +14,15 @@ namespace MyShop.Infrastructure
         {
         }
 
+        public override IEnumerable<Customer> GetAll()
+        {
+            return base.GetAll().Select( c => 
+            {
+                c.ProfilePictureValueHolder = new Lazy<byte[]>(ProfilePictureService.GetFor(c.Name));
+                return c;
+            });
+        }
+
         public override Customer Update(Customer entity)
         {
             var customer = Context.Customers.Single(c => c.CustomerId == entity.CustomerId);
