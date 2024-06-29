@@ -23,7 +23,7 @@ namespace MyShop.Infrastructure
            return Context.Set<T>().AsQueryable().Where(predicate);
         }
 
-        public T Get(Guid id)
+        public virtual T Get(Guid id)
         {
            return Context.Find<T>(id);
         }

@@ -23,8 +23,8 @@ namespace MyShop.Infrastructure
         {
             modelBuilder.Entity<Customer>()
                 .Ignore(c => c.ProfilePicture);
-            modelBuilder.Entity<Customer>()
-    .Ignore(c => c.ProfilePictureValueHolder);
+    //        modelBuilder.Entity<Customer>()
+    //.Ignore(c => c.ProfilePictureValueHolder);
 
             base.OnModelCreating(modelBuilder);
         }

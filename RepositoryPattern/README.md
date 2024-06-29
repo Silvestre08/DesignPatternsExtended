@@ -37,7 +37,21 @@ There are different flavors of Lazy loading:
 
 1. Lazy Initialization: the idea behind lazy initialization is the we only proceed to initialize our backing field to an exposed property the first time someone tries access the property. This ideia is implemented in our unit of work class: we only create a repository when we access the property by checking if it is null or not.
    Our example also adds a profile picture to our customer entity. Pictures are expensive and we should only load when they are needed.
+   In orther to achieve that, and avoid eager loading from entity framework, we econfigured entity framework to ignore the profile picture property.
+   The problem of this approach is that sometimes people couple the entities with external services to load their properties.
 
 Value holders
+We can circuvent the limitation described above by using the value holder pattern. We can use the Lazy<T> embebbed in the c# language. Lazy<T> is a value holder pattern implementation out of the box in .net and it is thread safe.
+The entity still knows a little how it is loaded which is not the best.
+For demonstration purposes I changed the customer entity to customer lazy just to have examples in the code.
+
 Virtuak Procies
+Virtual proxies (see design patterns) are another approach of lazy loading. It means inheriting from the base entity. This means mark our properties as virutal so that the proxy can overried them and change the default behavior of the property. The proxy intercepts the calls to the properties.
+This is a very common used pattern. Entity framework leverages this pattern heavily. In our case, when we have an order with a customer, we can configure the order object to load the costumer when it is necessary.
+By configuring EF to use lazy loading proxies (see OnConfiguring method) entity framework will return proxy ovjects instead of the real entities (we can see that through the debugger).
+
 Ghost Objects
+Finally we have ghost objects. Aghost object is an entity loaded in a partial state. It is fully loaded when a property is accessed.
+It is a chatty pattern and it is not used as often as the other lazy loading alternatives.
+The ghost object will know if it is a ghosted, if it is loaded or if it is loading the data for a particular entity.
+In our example in code we just inherited from the customer proxy, so we leverage two patterns at the same time.

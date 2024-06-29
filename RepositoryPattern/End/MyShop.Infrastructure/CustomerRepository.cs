@@ -1,4 +1,6 @@
 ﻿using MyShop.Domain.Models;
+using MyShop.Infrastructure.Lazy.Ghosts;
+using MyShop.Infrastructure.Lazy.Proxies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +16,23 @@ namespace MyShop.Infrastructure
         {
         }
 
+        public override Customer Get(Guid id)
+        {
+
+            var customerId = Context.Customers.Single(c => c.CustomerId == id).CustomerId;
+            return new GhostCustomer(() => base.Get(id)){ CustomerId = customerId };
+        }
+
         public override IEnumerable<Customer> GetAll()
         {
-            return base.GetAll().Select( c => 
-            {
-                c.ProfilePictureValueHolder = new Lazy<byte[]>(ProfilePictureService.GetFor(c.Name));
-                return c;
-            });
+
+            return base.GetAll().Select(MapToProxy);
+            // see customer lazy. left it here as a reference
+            //return base.GetAll().Select( c => 
+            //{
+            //    c.ProfilePictureValueHolder = new Lazy<byte[]>(ProfilePictureService.GetFor(c.Name));
+            //    return c;
+            //});
         }
 
         public override Customer Update(Customer entity)
@@ -34,6 +46,20 @@ namespace MyShop.Infrastructure
             customer.Country = entity.Country;
 
             return base.Update(entity);
+        }
+
+        private CustomerProxy MapToProxy(Customer customer) 
+        {
+            return new CustomerProxy
+            {
+                CustomerId = customer.CustomerId,
+                Name = customer.Name,
+                City = customer.City,
+                PostalCode = customer.PostalCode,
+                ShippingAddress = customer.ShippingAddress,
+                Country = customer.Country,
+
+            };
         }
     }
 }
